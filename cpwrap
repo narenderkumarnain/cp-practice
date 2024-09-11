@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Check if the correct number of arguments are passed
+if [ $# -ne 2 ]; then
+    echo "Usage: $0 <file-path> <enum>"
+    exit 1
+fi
+
+FILE_PATH=$1
+ENUM=$2
+
+# Check if the file exists
+
+
+# Process based on enum value
+case "$ENUM" in
+    MAKE)
+        # Command for fix1 (replace with actual command)
+        echo "Creating $FILE_PATH"
+        # Example command (replace with your actual command)
+        cp ./template.cpp $1
+        ;;
+    RUN)
+        if [ ! -f "$FILE_PATH" ]; then
+            echo "Error: File '$FILE_PATH' not found."
+            exit 1
+        fi
+        # Command for fix2 (replace with actual command)
+        echo "Running $FILE_PATH"
+        # Example command (replace with your actual command)
+        g++-14 -std=c++17 -o ./a.out $FILE_PATH
+        ./a.out < input.txt > output.txt
+        ;;
+    *)
+        # If enum is neither fix1 nor fix2
+        echo "Error: Invalid enum. Use 'fix1' or 'fix2'."
+        exit 1
+        ;;
+esac
+
+echo "Done!"
