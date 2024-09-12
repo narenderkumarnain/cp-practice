@@ -5,6 +5,7 @@ using namespace std;
 #define lli long long int 
 #define ld long double
 
+#define MOD 1000000007
 
 // modular arithemetic
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -29,7 +30,87 @@ lli getRandomNumber(lli l, lli r) {return uniform_int_distribution<lli>(l, r)(rn
 
 /* problem code here */
 
-int main() {
+int mul(int x, int y) {
+    return (x * 1LL * y) % MOD;
+}
 
+int power(int x, int y) {
+    int ans = 1;
+    while (y > 0) {
+        if (y & 1) ans = mul(ans, x);
+        x = mul(x, x);
+        y = y >> 1;
+    }
+    return ans;
+}
+
+int divide(int x, int y) {
+    return mul(x, power(y, (MOD - 2)));
+}
+
+int main() {
+    int t;
+    cin >> t;
+
+    while(t--) {
+        int n, m;
+        cin >> n >> m;
+
+        vector<int> students(n);
+        // int maxLevel = 0;
+        for(auto &it: students){
+            cin >> it;
+        }
+        // cout << "till here" << maxLevel << endl;
+        unordered_map<int,int> frequencyTable;
+        set<int> st;
+        for(int i=0;i<n;i++) {
+            st.insert(students[i]);
+            frequencyTable[students[i]]++;
+        }
+
+        vector<int> validLevelsTable(st.begin(), st.end());
+        int maxLevel = validLevelsTable.size();
+
+        // cout << "till here 2" << endl;
+
+        // increasing type -> 
+        int i = 0;
+        int j = 0;
+
+        int count = 0;
+
+        int zerosCount = 0;
+        int multiplicationRes = 1;
+
+
+        while(j < maxLevel) {
+            // add computation for j
+            if(frequencyTable[validLevelsTable[j]] == 0) zerosCount++;
+            else {
+                multiplicationRes = mul(multiplicationRes,frequencyTable[validLevelsTable[j]]);
+            }
+            while(validLevelsTable[j]-validLevelsTable[i]+1 > m) {
+                // remove i
+                if(frequencyTable[validLevelsTable[i]] == 0) zerosCount--;
+                else {
+                    multiplicationRes = divide(multiplicationRes, frequencyTable[validLevelsTable[i]]);
+                }
+                i++;
+            }
+
+            // now we have biggest such array for which the m condition is fulfilled
+            if(j-i+1 == m) {
+                // form no of ways
+                if(zerosCount == 0) {
+                    count = (count +  multiplicationRes) % MOD;
+                }
+            }
+            // update answer
+            j++;
+        }
+
+        cout << count << endl;
+    }
     return 0;
 }
