@@ -30,6 +30,74 @@ lli getRandomNumber(lli l, lli r) {return uniform_int_distribution<lli>(l, r)(rn
 /* problem code here */
 
 int main() {
-    
+    int t;
+    cin >> t;
+
+    while(t--) {
+        int n;
+        cin >> n;
+        vector<int> a(n);
+        for(auto &it: a) cin >> it;
+        vector<int> newA;
+        vector<bool> taken(n, false);
+        int mxEle = -1, idx;
+        for(int i=0;i<n;i++) {
+            if(a[i] > mxEle) {
+                mxEle = a[i];
+                idx = i;
+            }
+        }
+        taken[idx] = true;
+        newA.push_back(mxEle);
+
+        int prevOr = mxEle;
+
+        for(int i=31;i>=0;i--) {
+            // for each bit not set 
+            // try to find an element to set it
+            // if found, try to find it greedely for max
+            if((prevOr & (1 << i))) {
+                // already one
+                // cout << "already i: " <<i << endl;
+                continue;
+            }
+
+            int maxFound = prevOr;
+            int maxIdxFound = -1;
+            for(int j=0;j<n;j++) {
+                if(taken[j] == true) continue;
+
+                if(a[j] & (1 << i)) {
+                    if((prevOr | a[j]) > maxFound) {
+                        maxFound = prevOr | a[j];
+                        maxIdxFound = j;
+                    }
+                }
+            }
+
+            if(maxIdxFound == -1) {
+                // cout << "i: " <<i << maxIdxFound << endl;
+                continue;
+            }
+            // cout << "chosen i: " <<i << " - " << maxIdxFound << " - " << a[maxIdxFound] << endl;
+
+            taken[maxIdxFound] = true;
+            newA.push_back(a[maxIdxFound]);
+            // for(int k=0;k<newA.size();k++) cout << newA[k] << " - ";
+            // cout << endl;
+            prevOr = maxFound;
+        }
+
+        for(int i=0;i<n;i++) {
+            if(taken[i] == false) {
+                newA.push_back(a[i]);
+            }
+        }
+
+        for(int i=0;i<n;i++) {
+            cout << newA[i] << " ";
+        }
+        cout << endl;
+    }
     return 0;
 }
