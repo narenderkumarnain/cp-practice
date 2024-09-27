@@ -25,57 +25,45 @@ lli mod_div(lli a, lli b, lli m) {a = a % m; b = b % m; return (mod_mul(a, mminv
 lli phin(lli n) {lli number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (lli i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 lli getRandomNumber(lli l, lli r) {return uniform_int_distribution<lli>(l, r)(rng);} 
 /*--------------------------------------------------------------------------------------------------------------------------*/
-/* Combinatrics Template */
-/*
-#define int long long
- 
-const int MOD = 1e9 + 7;
-const int N = 1e6;
- 
-int mod(int a, int m = MOD) {
-    return a % m;
-}
- 
-template <class T> class Math {
-  public:
-    vector<T> fact, invfact;
-    Math() {}
-    Math(int n) {
-        fact.resize(n);
-        invfact.resize(n);
-        fact[0] = invfact[0] = 1;
-        for (int i = 1; i < n; i++) {
-            fact[i] = mod(i * fact[i - 1]);
-            invfact[i] = modinv(fact[i]);
-        }
-    }
-    T modinv(T x, T m = MOD) { return expo(x, m - 2, m); }
-    T expo(T base, T exp, T m = MOD) {
-        T res = 1;
-        while (exp) {
-            if (exp & 1)
-                res = mod(res * base, m);
-            base = mod(base * base, m);
-            exp >>= 1;
-        }
-        return res;
-    }
-    T choose(T n, T k) {
-        if (k < 0 || k > n)
-            return 0;
-        T ans = fact[n];
-        ans = mod(ans * invfact[n - k]);
-        ans = mod(ans * invfact[k]);
-        return ans;
-    }
-};
-
-*/
 /* template end here */
 
 /* problem code here */
 
 int main() {
+    lli n;
+    cin >> n;
 
+    lli N = n;
+    map<lli,lli> primefac;
+    for(lli i=2;i*i <= N;i++) {
+        lli count = 0;
+        while(N % i == 0) {
+            count++;
+            N /= i;
+        }
+        primefac[i] = count;
+    }
+    if(N > 1) primefac[N] = 1;
+
+    // prime factorization done
+    vector<lli> divCount(65, 0);
+    int currIdx = 1;
+    for(int i=2;i<65;i++) {
+        for(int j=0;j<i && currIdx < 65;j++) {
+            divCount[currIdx] = i-1;
+            currIdx++;
+        }
+        if(currIdx == 65) break;
+    }
+
+    // for(int i=0;i<65;i++){
+    //     cout << i << " - " << divCount[i] << endl;
+    // }
+    int ans = 0;
+    for(auto x: primefac) {
+        ans += divCount[x.second];
+    }
+
+    cout << ans << endl;
     return 0;
 }

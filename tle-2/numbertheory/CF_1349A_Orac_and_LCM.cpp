@@ -79,7 +79,7 @@ int main() {
 
     }
 
-    lli finalGcd = 1;
+    lli finalAns = 1;
     for(auto x: factors) {
         if(x.second.second >= (n-1)) {
             int val = x.first;
@@ -99,11 +99,11 @@ int main() {
                 // cout << x.first << " - n - " << minFreq << endl;
             }
 
-            finalGcd *= pow(1LL * val, 1LL * minFreq);
+            finalAns *= pow(1LL * val, 1LL * minFreq);
         }
     }
 
-    cout << finalGcd << endl;
+    cout << finalAns << endl;
 
     return 0;
 }
