@@ -2,6 +2,10 @@
     "files.associations": {
         "iostream": "cpp",
         "ostream": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "optional": "cpp",
+        "*.tcc": "cpp",
+        "chrono": "cpp",
+        "stacktrace": "cpp"
     }
 }

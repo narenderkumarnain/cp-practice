@@ -25,14 +25,16 @@ lli mod_div(lli a, lli b, lli m) {a = a % m; b = b % m; return (mod_mul(a, mminv
 lli phin(lli n) {lli number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (lli i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 lli getRandomNumber(lli l, lli r) {return uniform_int_distribution<lli>(l, r)(rng);} 
 /*--------------------------------------------------------------------------------------------------------------------------*/
+const lli MOD = 998244353;
+
 /* Combinatrics Template */
 /*
-#define intl long long
+#define int long long
  
-const intl MOD = 1e9 + 7;
-const intl N = 1e6;
+const int MOD = 1e9 + 7;
+const int N = 1e6;
  
-intl mod(intl a, intl m = MOD) {
+int mod(int a, int m = MOD) {
     return a % m;
 }
  
@@ -40,11 +42,11 @@ template <class T> class Math {
   public:
     vector<T> fact, invfact;
     Math() {}
-    Math(intl n) {
+    Math(int n) {
         fact.resize(n);
         invfact.resize(n);
         fact[0] = invfact[0] = 1;
-        for (intl i = 1; i < n; i++) {
+        for (int i = 1; i < n; i++) {
             fact[i] = mod(i * fact[i - 1]);
             invfact[i] = modinv(fact[i]);
         }
@@ -76,6 +78,24 @@ template <class T> class Math {
 /* problem code here */
 
 int main() {
+    int n;
+    cin >> n;
+    vector<int> arr(n);
+    for(auto &it: arr) cin >> it;
 
+    map<int,int> mp;
+    for(int i=0;i<n;i++) mp[arr[i]] = i;
+
+    lli res = 1;
+    int currMaxIdx = 0;
+    for(int i=0;i<n-1;i++) {
+        currMaxIdx = max(currMaxIdx, mp[arr[i]]);
+
+        if(i == currMaxIdx) {
+            res = mod_mul(res, 2, MOD);
+        }
+    }
+
+    cout << res << endl;
     return 0;
 }

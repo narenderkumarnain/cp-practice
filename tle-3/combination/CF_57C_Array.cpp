@@ -2,7 +2,7 @@
 using namespace std;
 
 /* template under progress */
-#define lli long long int 
+#define lli long long
 #define ld long double
 
 
@@ -17,7 +17,7 @@ lli mminvprime(lli a, lli b) {return expo(a, b - 2, b);}
 bool revsort(lli a, lli b) {return a > b;}
 lli combination(lli n, lli r, lli m, lli *fact, lli *ifact) {lli val1 = fact[n]; lli val2 = ifact[n - r]; lli val3 = ifact[r]; return (((val1 * val2) % m) * val3) % m;}
 void google(int t) {cout << "Case #" << t << ": ";}
-vector<lli> sieve(int n) {int*arr = new int[n + 1](); vector<lli> vect; for (int i = 2; i <= n; i++)if (arr[i] == 0) {vect.push_back(i); for (int j = 2 * i; j <= n; j += i)arr[j] = 1;} return vect;}
+// vector<lli> sieve(int n) {int*arr = new int[n + 1](); vector<lli> vect; for (int i = 2; i <= n; i++)if (arr[i] == 0) {vect.push_back(i); for (intL j = 2 * i; j <= n; j += i)arr[j] = 1;} return vect;}
 lli mod_add(lli a, lli b, lli m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
 lli mod_mul(lli a, lli b, lli m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
 lli mod_sub(lli a, lli b, lli m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
@@ -26,13 +26,13 @@ lli phin(lli n) {lli number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0
 lli getRandomNumber(lli l, lli r) {return uniform_int_distribution<lli>(l, r)(rng);} 
 /*--------------------------------------------------------------------------------------------------------------------------*/
 /* Combinatrics Template */
-/*
-#define intl long long
+// /*
+#define intL long long
  
-const intl MOD = 1e9 + 7;
-const intl N = 1e6;
+const intL MOD = 1e9 + 7;
+// const intL N = 1e6;
  
-intl mod(intl a, intl m = MOD) {
+intL mod(intL a, intL m = MOD) {
     return a % m;
 }
  
@@ -40,11 +40,11 @@ template <class T> class Math {
   public:
     vector<T> fact, invfact;
     Math() {}
-    Math(intl n) {
+    Math(intL n) {
         fact.resize(n);
         invfact.resize(n);
         fact[0] = invfact[0] = 1;
-        for (intl i = 1; i < n; i++) {
+        for (intL i = 1; i < n; i++) {
             fact[i] = mod(i * fact[i - 1]);
             invfact[i] = modinv(fact[i]);
         }
@@ -70,12 +70,29 @@ template <class T> class Math {
     }
 };
 
-*/
+// */
 /* template end here */
 
 /* problem code here */
 
 int main() {
+    intL n;
+    cin >> n;
 
-    return 0;
+    // compute no of ways to get ascending array
+    intL res = 0;
+
+    intL N = 2 * n + 1;
+    Math<intL> mth(N);
+
+    // cout << "here" << endl;
+
+    for(intL i=0;i<=n-1;i++) {
+        res = mod_add(res, mth.choose(n + i - 1, n - 1), MOD);
+    }
+
+    res = mod_sub(mod_mul(res, 2, MOD), n, MOD);
+    cout << res << endl;
+
+    return (intL)0;
 }

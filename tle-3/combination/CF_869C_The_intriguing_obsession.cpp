@@ -25,11 +25,12 @@ lli mod_div(lli a, lli b, lli m) {a = a % m; b = b % m; return (mod_mul(a, mminv
 lli phin(lli n) {lli number = n; if (n % 2 == 0) {number /= 2; while (n % 2 == 0) n /= 2;} for (lli i = 3; i <= sqrt(n); i += 2) {if (n % i == 0) {while (n % i == 0)n /= i; number = (number / i * (i - 1));}} if (n > 1)number = (number / n * (n - 1)) ; return number;} //O(sqrt(N))
 lli getRandomNumber(lli l, lli r) {return uniform_int_distribution<lli>(l, r)(rng);} 
 /*--------------------------------------------------------------------------------------------------------------------------*/
+const lli MOD = 998244353;
+
 /* Combinatrics Template */
-/*
 #define intl long long
  
-const intl MOD = 1e9 + 7;
+// const intl MOD = 1e9 + 7;
 const intl N = 1e6;
  
 intl mod(intl a, intl m = MOD) {
@@ -70,12 +71,39 @@ template <class T> class Math {
     }
 };
 
-*/
+
 /* template end here */
 
 /* problem code here */
 
+intl bridgesCount(intl a, intl b, Math<intl> &mth) {
+    intl maxBridges = min(a, b);
+
+    // we can make 0 to maxBridges briges
+    // no of ways to build i bridges = aCi x bCi x i!
+    intl res = 0;
+    for(intl i=0;i<=maxBridges;i++) {
+        intl temp = mod_mul(mth.choose(a, i), mth.choose(b, i), MOD);
+        temp = mod_mul(temp, mth.fact[i], MOD);
+
+        res = mod_add(temp, res, MOD);
+    }
+
+    return res;
+}
+
 int main() {
+    intl a,b,c;
+    cin >> a >> b >> c;
+
+    Math<intl> mth(5001);
+
+    intl finalRes = 1;
+    finalRes = mod_mul(finalRes, bridgesCount(a, b, mth), MOD);
+    finalRes = mod_mul(finalRes, bridgesCount(b, c, mth), MOD);
+    finalRes = mod_mul(finalRes, bridgesCount(c, a, mth), MOD);
+
+    cout << finalRes << endl;
 
     return 0;
 }

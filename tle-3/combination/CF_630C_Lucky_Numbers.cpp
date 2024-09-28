@@ -27,12 +27,12 @@ lli getRandomNumber(lli l, lli r) {return uniform_int_distribution<lli>(l, r)(rn
 /*--------------------------------------------------------------------------------------------------------------------------*/
 /* Combinatrics Template */
 /*
-#define intl long long
+#define int long long
  
-const intl MOD = 1e9 + 7;
-const intl N = 1e6;
+const int MOD = 1e9 + 7;
+const int N = 1e6;
  
-intl mod(intl a, intl m = MOD) {
+int mod(int a, int m = MOD) {
     return a % m;
 }
  
@@ -40,11 +40,11 @@ template <class T> class Math {
   public:
     vector<T> fact, invfact;
     Math() {}
-    Math(intl n) {
+    Math(int n) {
         fact.resize(n);
         invfact.resize(n);
         fact[0] = invfact[0] = 1;
-        for (intl i = 1; i < n; i++) {
+        for (int i = 1; i < n; i++) {
             fact[i] = mod(i * fact[i - 1]);
             invfact[i] = modinv(fact[i]);
         }
@@ -76,6 +76,10 @@ template <class T> class Math {
 /* problem code here */
 
 int main() {
+    lli n;
+    cin >> n;
+    lli res = (1LL << (n + 1)) - 2;
 
+    cout << res << endl;
     return 0;
 }
