@@ -14,13 +14,20 @@ ENUM=$2
 
 # Process based on enum value
 case "$ENUM" in
-    MAKE)
-        # Command for fix1 (replace with actual command)
-        echo "Creating $FILE_PATH"
-        # Example command (replace with your actual command)
-        cp ./template.cpp $1
+    make)
+        if [ ! -f "$FILE_PATH" ]; then
+            # Create the file if it doesn't exist
+            # Command for fix1 (replace with actual command)
+            echo "Creating $FILE_PATH"
+            # Example command (replace with your actual command)
+            cp ./template.cpp $1
+            echo "File '$FILE_PATH' created successfully."
+        else
+            echo "File '$FILE_PATH' already exists. No action taken."
+            exit 1
+        fi
         ;;
-    RUN)
+    run)
         if [ ! -f "$FILE_PATH" ]; then
             echo "Error: File '$FILE_PATH' not found."
             exit 1
