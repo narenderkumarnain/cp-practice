@@ -37,6 +37,8 @@ case "$ENUM" in
         # Example command (replace with your actual command)
         g++-14 -std=c++17 -o ./a.out $FILE_PATH
         ./a.out < input.txt > output.txt
+        # clang++ -std=c++17 -o ./a.out $FILE_PATH
+        # ./a.out < input.txt > output.txt
         ;;
     *)
         # If enum is neither fix1 nor fix2
