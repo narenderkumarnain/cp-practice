@@ -76,7 +76,66 @@ template <class T> class Math {
 /* problem code here */
 
 void solve() {
+    int t;
+    cin >> t;
+    while(t--) {
+        int n;
+        cin >> n;
 
+        string s;
+        cin >> s;
+
+        stack<pair<char, int>> st;
+
+        int openingCount = 0;
+        int closingCount = 0;
+
+
+        int ans = 0;
+        int startIdx = 0;
+
+        vector<pair<int,int>> startfromclosing, startfromopening;
+        vector<int> colouring(n);
+        for(int i=0;i<n;i++) {
+            if(s[i] == '(') {
+                openingCount++;
+            } else {
+                closingCount++;
+            }
+
+            if(openingCount == closingCount) {
+                if(s[startIdx] == '(') startfromopening.push_back({startIdx, i});
+                else startfromclosing.push_back({startIdx, i});
+
+                startIdx = i+1;
+            }
+        }
+
+        if(openingCount != closingCount) {
+            cout << -1 << "\n";
+        } else {
+            if((startfromclosing.empty() && !startfromopening.empty()) || (!startfromclosing.empty() && startfromopening.empty())) {
+            int ans = 1;
+            cout << 1 << "\n";
+            for(int i=0;i<n;i++) {
+                cout << 1 << " ";
+            }
+            cout << endl;
+            continue;
+            } else {
+                for(auto x: startfromopening) {
+                    for(int i=x.first;i<=x.second;i++) colouring[i] = 1;
+                }
+                for(auto x: startfromclosing) {
+                    for(int i=x.first;i<=x.second;i++) colouring[i] = 2;
+                }
+                cout << 2 << "\n";
+                for(auto x: colouring) cout << x << " ";
+                cout << endl;
+                continue;
+            }
+        }
+    }
 }
 
 int main() {

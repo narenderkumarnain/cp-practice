@@ -76,7 +76,65 @@ template <class T> class Math {
 /* problem code here */
 
 void solve() {
+    int n, m;
+    cin >> n >> m;
 
+    vector<int> freqMap(m+1, 0);
+    vector<int> arr(n);
+    int extra = 0;
+    for(int i=0;i<n;i++) {
+        int t;
+        cin >> t;
+        arr[i] = t;
+
+        if(t <= m) freqMap[t]++;
+        else extra++;
+    }
+
+    int maxPossibleVal = n / m;
+
+    int deltaReq = 0;
+    for(int i=1;i<=m;i++) {
+        if(freqMap[i] <= maxPossibleVal) {
+            deltaReq += maxPossibleVal - freqMap[i];
+            freqMap[i] = maxPossibleVal - freqMap[i];
+        } else {
+            freqMap[i] = 0;
+        }
+    }
+
+    vector<int> requiement(m+1, maxPossibleVal);
+
+
+    int idx = 1;
+    for(int i=0;i<n;i++) {
+        if(arr[i] <= m) {
+            if(requiement[arr[i]] >= 1) {
+                // choose it 
+                requiement[arr[i]]--;
+            } else {
+                // we assign it to someone else who needs it
+                while(idx <= m && freqMap[idx] == 0) idx++;
+                if(idx <= m) {
+                    arr[i] = idx;
+                    requiement[idx]--;
+                    freqMap[idx]--;
+                }
+            }
+        } else {
+            // assign to someone else
+            while(idx <= m && freqMap[idx] == 0) idx++;
+            if(idx <= m) {
+                arr[i] = idx;
+                requiement[idx]--;
+                freqMap[idx]--;
+            }
+        }
+    }   
+    cout << maxPossibleVal << " " << deltaReq << endl;
+
+    for(auto x: arr) cout << x << " ";
+    cout << endl;
 }
 
 int main() {

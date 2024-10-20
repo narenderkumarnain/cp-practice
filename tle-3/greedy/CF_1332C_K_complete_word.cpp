@@ -76,7 +76,50 @@ template <class T> class Math {
 /* problem code here */
 
 void solve() {
+    int t;
+    cin >> t;
+    while(t--) {
+        int n, k;
+        cin >> n >> k;
 
+        string s;
+        cin >> s;
+
+        int noOfRepetitions = n / k;
+
+        int KK = k/2;
+        if(k % 2 != 0) KK ++;
+        vector<int> reqFreq(KK, noOfRepetitions);
+        for(int i=0;i<k/2;i++) {
+            reqFreq[i] = noOfRepetitions * 2;
+        }
+
+        vector<map<int, int>> freqMaps(KK, map<int,int>());
+        for(int i=0;i<s.length();i++) {
+            int batchIdx = i / k;
+            int idx = i - (batchIdx * k);
+            // cout << batchIdx << " batch -  " << idx << endl;
+
+            int positionIdx = idx;
+            if(idx >= k/2) positionIdx = k-idx-1;
+            // cout << idx << " - " << positionIdx << endl;
+            freqMaps[positionIdx][s[i]]++;
+            // cout << "done" << endl;
+        }
+
+        int finalAns = 0;
+        for(int i=0;i<KK;i++) {
+            int maxFreq = 0;
+            for(auto x: freqMaps[i]) {
+                maxFreq = max(maxFreq, x.second);
+            }
+            int reqF = reqFreq[i];
+            // cout << "req " << reqF << " " << maxFreq << endl;
+            finalAns += (reqF - maxFreq);
+        }
+
+        cout << finalAns << "\n";
+    }
 }
 
 int main() {

@@ -76,7 +76,32 @@ template <class T> class Math {
 /* problem code here */
 
 void solve() {
+    int t;
+    cin >> t;
 
+    while(t--) {
+        int n;
+        cin >> n;
+        vector<lli> a(n), b(n);
+        lli sm_a = 0, sm_b = 0;
+        for(auto &it: a) {cin >> it; sm_a += it;}
+        for(auto &it: b) {cin >> it; sm_b += it;}
+
+        priority_queue<pair<lli,int>> pq;
+        for(int i=0;i<n;i++) pq.push({a[i] + b[i] - 2, i});
+
+        lli finalAns = sm_a - sm_b;
+        bool aliceTurn = true;
+        while(!pq.empty()) {
+            auto t = pq.top();
+            pq.pop();
+            if(aliceTurn) finalAns += (b[t.second] - 1);
+            else finalAns -= (a[t.second] - 1);
+            aliceTurn = !aliceTurn;
+        }
+        
+        cout << finalAns << "\n";
+    }
 }
 
 int main() {
