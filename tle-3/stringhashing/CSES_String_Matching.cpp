@@ -75,7 +75,7 @@ template <class T> class Math {
 /**
  * String Hashing
  */
-/*
+
 
 class StringHash {
     lli mod = 1e9 + 7;
@@ -95,8 +95,8 @@ public:
         power[0] = {1, 1};
         for(int i=1;i<=n;i++) {
             prefixHash[i] = {
-                mod_add(mod_mul(prefixHash[i-1].first, B1, mod), (s[i-1] - 'a' + 1LL), mod),
-                mod_add(mod_mul(prefixHash[i-1].second, B2, mod), (s[i-1] - 'a' + 1LL), mod)
+                mod_add(mod_mul(prefixHash[i-1].first, B1, mod), (s[i-1] - 'a'), mod),
+                mod_add(mod_mul(prefixHash[i-1].second, B2, mod), (s[i-1] - 'a'), mod)
             };
             power[i] = {
                 mod_mul(power[i-1].first, B1 , mod),
@@ -113,13 +113,38 @@ public:
         return {hash1, hash2};
     }
 };
-*/
+
 /* template end here */
 
 /* problem code here */
 
 void solve() {
+    string s;
+    cin >> s;
+    string pattern;
+    cin >> pattern;
 
+    int m = pattern.length();
+    int n = s.length();
+
+    StringHash h1(s), h2(pattern);
+
+    auto patternHash = h2.getHash(0, m-1);
+
+    int a = 0;
+    int b = 0;
+    int ans = 0;
+
+
+    while(b < n) {
+        while(b < n && (b-a+1) < m) b++;
+        auto hash = h1.getHash(a, b);
+        if(hash.first == patternHash.first && hash.second == patternHash.second) ans ++;
+        a++;
+        b++;
+    }
+
+    cout << ans << "\n";
 }
 
 int main() {

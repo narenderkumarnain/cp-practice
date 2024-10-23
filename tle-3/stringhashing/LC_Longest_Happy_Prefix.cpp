@@ -1,12 +1,10 @@
 #include<bits/stdc++.h>
 using namespace std;
-#pragma GCC optimize("unroll-loops,O3,Ofast") //even 10^8+ also works with this
-
 
 /* template under progress */
 #define lli long long int 
 #define ld long double
-// modular arithemetic
+// modular arithemetics
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 /*---------------------------------------------------------------------------------------------------------------------------*/
 lli gcd(lli a, lli b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
@@ -71,59 +69,48 @@ template <class T> class Math {
 };
 
 */
-
-/**
- * String Hashing
- */
-/*
-
-class StringHash {
+/* template end here */
     lli mod = 1e9 + 7;
     // lli mod2 = 1e9 + 7;
-    lli B1 = 5689;
-    lli B2 = 8861;
+    lli B1 = 31;
+    lli B2 = 29;
 
-    vector<pair<lli,lli>> prefixHash, power;
+class Solution {
 public:
-    StringHash(string s) {
+    string longestPrefix(string s) {
         int n = s.length();
-        prefixHash.resize(n+1);
-        power.resize(n+1);
 
-        // using 1 based indexing here
-        prefixHash[0] = {0,0};
-        power[0] = {1, 1};
-        for(int i=1;i<=n;i++) {
-            prefixHash[i] = {
-                mod_add(mod_mul(prefixHash[i-1].first, B1, mod), (s[i-1] - 'a' + 1LL), mod),
-                mod_add(mod_mul(prefixHash[i-1].second, B2, mod), (s[i-1] - 'a' + 1LL), mod)
-            };
-            power[i] = {
-                mod_mul(power[i-1].first, B1 , mod),
-                mod_mul(power[i-1].second, B2 , mod),
-            };
+        int start = 0;
+        int end = n-1;
+
+        lli hashFront1 = 0, hashFront2 = 0;
+        lli b1 = 1, b2 = 1;
+        lli hashBack1 = 0, hashBack2 = 0;
+
+        int resLen = 0;
+        while(start < n-1 && end > 0) {
+            // add some hashes
+            // compare 
+            // go back 
+            b1 = mod_mul(b1, B1, mod);
+            b2 = mod_mul(b2, B2, mod);
+            hashFront1 = mod_add(hashFront1, mod_mul(s[start]-'a'+1LL, b1, mod), mod);
+            hashFront2 = mod_add(hashFront2, mod_mul(s[start]-'a'+1LL, b2, mod), mod);
+
+            hashBack1 = mod_add(mod_mul(s[end]-'a'+1LL, B1, mod), mod_mul(hashBack1, B1, mod), mod);
+            hashBack2 = mod_add(mod_mul(s[end]-'a'+1LL, B2, mod), mod_mul(hashBack2, B2, mod), mod);
+
+            // cout << hashBack1 << " - " << hashFront1 << endl;
+            // cout << hashBack2 << " - " << hashFront2 << endl;
+            if(hashBack1 == hashFront1 && hashBack2 == hashFront2) {
+                if(resLen < (start+1)) {
+                    resLen = start+1;
+                }
+            }
+            start++;
+            end--;
         }
-    }
 
-    pair<int,int> getHash(int l, int r) {
-        l++;
-        r++;
-        lli hash1 = mod_sub(prefixHash[r].first, mod_mul(prefixHash[l-1].first, power[r-l+1].first, mod), mod);
-        lli hash2 = mod_sub(prefixHash[r].second, mod_mul(prefixHash[l-1].second, power[r-l+1].second, mod), mod);
-        return {hash1, hash2};
+        return s.substr(0, resLen);
     }
 };
-*/
-/* template end here */
-
-/* problem code here */
-
-void solve() {
-
-}
-
-int main() {
-    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-    solve();
-    return 0;
-}

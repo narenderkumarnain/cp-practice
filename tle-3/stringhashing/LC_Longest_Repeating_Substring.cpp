@@ -71,17 +71,13 @@ template <class T> class Math {
 };
 
 */
-
-/**
- * String Hashing
- */
-/*
+/* template end here */
 
 class StringHash {
     lli mod = 1e9 + 7;
     // lli mod2 = 1e9 + 7;
-    lli B1 = 5689;
-    lli B2 = 8861;
+    lli B1 = 31;
+    lli B2 = 29;
 
     vector<pair<lli,lli>> prefixHash, power;
 public:
@@ -90,7 +86,6 @@ public:
         prefixHash.resize(n+1);
         power.resize(n+1);
 
-        // using 1 based indexing here
         prefixHash[0] = {0,0};
         power[0] = {1, 1};
         for(int i=1;i<=n;i++) {
@@ -113,13 +108,57 @@ public:
         return {hash1, hash2};
     }
 };
-*/
-/* template end here */
 
-/* problem code here */
+class Solution {
+public:
+    string longestDupSubstring(string s) {
+        StringHash hs(s);
+        int n = s.length();
+        int start = 1;
+        int end = s.length();
+
+        int ansLen = 0;
+        string ans = "";
+        while(start <= end) {
+            int mid = start + (end-start)/2;
+
+            // set<pair<int,int>> st;
+            unordered_set<int> st1, st2;
+            int a = 0;
+            int b = 0;
+
+            bool found = false;
+            while(b < n) {
+                while((b-a+1) < mid) b++;
+                auto hashVal = hs.getHash(a, b);
+
+                if(st1.find(hashVal.first) != st1.end() && st2.find(hashVal.second) != st2.end()) {
+                    if(mid > ansLen) {
+                        ansLen = mid;
+                        ans = s.substr(a, mid);
+                    }
+                    found = true;
+                    break;
+                }
+                st1.insert(hashVal.first);
+                st2.insert(hashVal.second);
+                a++;
+                b++;
+            }
+
+            if(found == true){
+                start = mid+1;
+            } else end=mid-1;
+        }
+        return ans;
+    }
+};
 
 void solve() {
+    string a = "banana";
+    Solution s;
 
+    cout << s.longestDupSubstring(a) << endl;
 }
 
 int main() {

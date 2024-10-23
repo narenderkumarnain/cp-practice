@@ -75,7 +75,7 @@ template <class T> class Math {
 /**
  * String Hashing
  */
-/*
+
 
 class StringHash {
     lli mod = 1e9 + 7;
@@ -113,13 +113,32 @@ public:
         return {hash1, hash2};
     }
 };
-*/
+
 /* template end here */
 
 /* problem code here */
 
 void solve() {
+    string s;
+    cin >> s;
+    StringHash sh(s);
 
+    int n = s.length();
+    int mxIdx = n-1;
+    // cout << n << endl;
+    // if(n % 2 != 0) mxIdx++;
+    vector<int> ans;
+    for(int i=0;i<mxIdx;i++) {
+        auto hash1 = sh.getHash(0, i);
+        int ln = i+1;
+        auto hash2 = sh.getHash(n-i-1, n-1);
+
+        if(hash1.first == hash2.first && hash1.second == hash2.second) {
+            ans.push_back(ln);
+        }
+    }
+
+    for(auto x: ans) cout << x << " ";
 }
 
 int main() {

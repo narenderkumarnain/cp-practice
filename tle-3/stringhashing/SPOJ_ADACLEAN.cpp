@@ -75,13 +75,13 @@ template <class T> class Math {
 /**
  * String Hashing
  */
-/*
+
 
 class StringHash {
-    lli mod = 1e9 + 7;
+    lli mod = 1e18+9;
     // lli mod2 = 1e9 + 7;
-    lli B1 = 5689;
-    lli B2 = 8861;
+    lli B1 = 31;
+    lli B2 = 53;
 
     vector<pair<lli,lli>> prefixHash, power;
 public:
@@ -105,7 +105,7 @@ public:
         }
     }
 
-    pair<int,int> getHash(int l, int r) {
+    pair<lli,lli> getHash(int l, int r) {
         l++;
         r++;
         lli hash1 = mod_sub(prefixHash[r].first, mod_mul(prefixHash[l-1].first, power[r-l+1].first, mod), mod);
@@ -113,13 +113,38 @@ public:
         return {hash1, hash2};
     }
 };
-*/
+
 /* template end here */
 
 /* problem code here */
 
 void solve() {
+    int t;
+    cin >> t;
+    while(t--) {
+        int n, k;
+        cin >> n >> k;
 
+        string s;
+        cin >> s;
+
+        StringHash sh(s);
+
+        int a = 0;
+        int b = 0;
+
+        unordered_set<lli> st1, st2;
+
+        while(b < n) {
+            while(b < n && (b-a+1) < k) b++;
+            auto hash = sh.getHash(a, b);
+            st1.insert(hash.first);
+            st2.insert(hash.second);
+            a++;b++;
+        }
+
+        cout << max(st1.size(), st2.size()) << "\n";
+    }
 }
 
 int main() {
