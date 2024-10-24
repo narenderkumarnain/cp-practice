@@ -6,6 +6,14 @@
         "optional": "cpp",
         "*.tcc": "cpp",
         "chrono": "cpp",
-        "stacktrace": "cpp"
+        "stacktrace": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp"
     }
 }

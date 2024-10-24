@@ -75,7 +75,7 @@ template <class T> class Math {
 /**
  * String Hashing
  */
-/*
+
 
 class StringHash {
     lli mod = 1e9 + 7;
@@ -113,13 +113,54 @@ public:
         return {hash1, hash2};
     }
 };
-*/
+
 /* template end here */
 
 /* problem code here */
 
 void solve() {
+    string s;
+    cin >> s;
 
+    StringHash sh(s);
+
+    int n = s.length();
+    int start = 1;
+    int end = n;
+
+    int ansLen = -1, ansStart, ansEnd;
+    while(start <= end) {
+        int mid = start + (end-start)/2;
+        
+        bool found = false;
+        unordered_set<lli> st;
+        for(int i=0;i<n;i++) {
+            int end = i + mid-1;
+            if(end >= n) break;
+
+            auto hash = sh.getHash(i, end);
+            lli val = (1LL * hash.first) * 1000000021 + (1LL * hash.second);
+            if(
+                st.find(val) != st.end()
+            ) {
+                if(mid > ansLen) {
+                    ansLen = mid;
+                    ansStart = i;
+                    ansEnd = end;
+                }
+                found = true;
+                break;
+            }
+            st.insert(val);
+            // st2.insert(hash.second);
+        }
+
+        if(found) start=mid+1;
+        else end=mid-1;
+    }
+
+    if(ansLen == -1) cout << -1 << endl;
+    else cout << s.substr(ansStart, ansLen) << endl; 
 }
 
 int main() {

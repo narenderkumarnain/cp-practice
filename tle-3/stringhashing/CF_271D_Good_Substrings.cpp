@@ -75,17 +75,17 @@ template <class T> class Math {
 /**
  * String Hashing
  */
-/*
+
 
 class StringHash {
     lli mod = 1e9 + 7;
     // lli mod2 = 1e9 + 7;
-    lli B1 = 5689;
-    lli B2 = 8861;
+    lli B1 = 31;
+    lli B2 = 29;
 
     vector<pair<lli,lli>> prefixHash, power;
 public:
-    StringHash(string &s) {
+    StringHash(string s) {
         int n = s.length();
         prefixHash.resize(n+1);
         power.resize(n+1);
@@ -113,13 +113,47 @@ public:
         return {hash1, hash2};
     }
 };
-*/
+
 /* template end here */
 
 /* problem code here */
 
 void solve() {
+    string s;
+    cin >> s;
 
+    StringHash sh(s);
+
+    string mp;
+    cin >> mp;
+
+    int k;
+    cin >> k;
+    int n = s.length();
+
+    vector<pair<int,int>> hashes;
+
+    for(int i=0;i<n;i++) {
+        int badCount = 0;
+        for(int j=i;j<n;j++) {
+            badCount += ((mp[s[j] - 'a'] == '0') ? 1 : 0);
+            auto hash = sh.getHash(i, j);
+            if(badCount > k) continue;
+            hashes.push_back(hash);
+        }
+    }
+
+    sort(hashes.begin(), hashes.end());
+    // for(auto x: hashes) cout << x.first << " - " << x.second << endl;
+    int uniqueCount = 0;
+    for(int i=1;i<hashes.size();i++) {
+        if(hashes[i].first != hashes[i-1].first || hashes[i].second != hashes[i-1].second) {
+            uniqueCount++;
+        }
+    }
+
+    if(hashes.size() == 0) cout << 0 << "\n";
+    else cout << uniqueCount+1 << "\n";
 }
 
 int main() {

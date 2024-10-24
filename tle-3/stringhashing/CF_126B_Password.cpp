@@ -75,7 +75,7 @@ template <class T> class Math {
 /**
  * String Hashing
  */
-/*
+
 
 class StringHash {
     lli mod = 1e9 + 7;
@@ -113,13 +113,52 @@ public:
         return {hash1, hash2};
     }
 };
-*/
+
 /* template end here */
 
 /* problem code here */
 
 void solve() {
+    string s;
+    cin >> s;
 
+    StringHash sh(s);
+    int n = s.length();
+    
+    vector<int> possiblePrefixes;
+    for(int i=1;i<n;i++) {
+        if(sh.getHash(0,i-1) == sh.getHash(n-i, n-1)) {
+            possiblePrefixes.push_back(i);
+        }
+    }
+
+    int ans = -1;
+
+    int l = 0;
+    int r = possiblePrefixes.size()-1;
+    while(l <= r) {
+        int mid = l + (r-l)/2;
+
+        int prefixSize = possiblePrefixes[mid];
+        auto prefixHash = sh.getHash(0, prefixSize-1);
+        // cout << prefixSize << endl;
+        bool found = false;
+        for(int start = 1;start < n;start += 1) {
+            int end = min(n-2, start + prefixSize-1);
+
+            if(sh.getHash(start, end) == prefixHash) {
+                found = true;
+                ans = max(ans, prefixSize);
+                break;
+            }
+        }
+
+        if(found) l = mid+1;
+        else r = mid-1;
+    }
+
+    if(ans == -1) cout << "Just a legend" << "\n";
+    else cout << s.substr(0, ans) << "\n";
 }
 
 int main() {

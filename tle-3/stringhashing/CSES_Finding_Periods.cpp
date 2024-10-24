@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-#pragma GCC optimize("unroll-loops,O3,Ofast") //even 10^8+ also works with this
+// #pragma GCC optimize("unroll-loops,O3,Ofast") //even 10^8+ also works with this
 
 
 /* template under progress */
@@ -75,13 +75,13 @@ template <class T> class Math {
 /**
  * String Hashing
  */
-/*
+
 
 class StringHash {
     lli mod = 1e9 + 7;
     // lli mod2 = 1e9 + 7;
-    lli B1 = 5689;
-    lli B2 = 8861;
+    lli B1 = 29;
+    lli B2 = 31;
 
     vector<pair<lli,lli>> prefixHash, power;
 public:
@@ -113,17 +113,41 @@ public:
         return {hash1, hash2};
     }
 };
-*/
+
 /* template end here */
 
 /* problem code here */
 
-void solve() {
-
-}
-
 int main() {
-    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
-    solve();
+    ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+    string s;
+    cin >> s;
+
+    StringHash sh(s);
+
+    int n = s.length();
+
+    // vector<int> validPeriods;
+
+    for(int i=1;i<=n;i++) {
+        int start = 0;
+        int end = start+i-1;
+        bool valid = true;
+
+        while(start < n) {
+            if(sh.getHash(0, end-start) != sh.getHash(start,end)) {
+                valid = false;
+                break;
+            }
+            start += i;
+            end = min(n-1, end+i);
+        }
+        if(valid) {
+            cout << i << " ";
+        }
+    }
+
+    // for(auto x: validPeriods) cout << x << " ";
+    cout << endl;
     return 0;
 }
