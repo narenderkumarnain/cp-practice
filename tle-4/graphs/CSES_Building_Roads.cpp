@@ -119,7 +119,42 @@ public:
 /* problem code here */
 
 void solve() {
-    
+    int n, m;
+    cin >> n >> m;
+    vector<int> graph[n];
+    for(int i=0;i<m;i++){
+        int a, b;
+        cin >> a >> b;
+        a--;b--;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
+
+    // finding connected components 
+    vector<int> visited(n,false);
+    function<void(int)>dfs=[&](int node) {
+        visited[node]=true;
+        for(auto x: graph[node]){
+            if(visited[x]==false){
+                dfs(x);
+            }
+        }
+    };
+
+    int connectedComponentsCount = 0;
+    vector<int> nodes;
+    for(int i=0;i<n;i++){
+        if(!visited[i]) {
+            dfs(i);
+            connectedComponentsCount++;
+            nodes.push_back(i);
+        }
+    }
+
+    cout << connectedComponentsCount-1 << "\n";
+    for(int i=1;i<nodes.size();i++){
+        cout << nodes[i-1]+1 << " " << nodes[i]+1 << "\n";
+    }
 }
 
 int main() {

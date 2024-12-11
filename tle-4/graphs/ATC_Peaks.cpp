@@ -119,7 +119,25 @@ public:
 /* problem code here */
 
 void solve() {
-    
+    int n, m;
+    cin >>n >>m;
+    vector<int> elevations(n);
+    for(auto &it: elevations)cin>>it;
+    vector<int> graph(n, -1);
+    for(int i=0;i<m;i++){
+        int a, b;
+        cin>>a >>b;
+        a--;b--;
+        graph[a]=max(graph[a], elevations[b]);
+        graph[b]=max(graph[b], elevations[a]);
+    }
+
+    int count=0;
+    for(int i=0;i<n;i++){
+        if(graph[i]==-1 || graph[i]<elevations[i]){count++;}
+    }
+
+    cout<<count<<endl;
 }
 
 int main() {

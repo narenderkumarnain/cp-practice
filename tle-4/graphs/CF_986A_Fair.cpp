@@ -119,7 +119,62 @@ public:
 /* problem code here */
 
 void solve() {
-    
+    int n, m, k, s;
+    cin>>n>>m>>k>>s;
+    vector<int>graph[n];
+
+    vector<int> goods(n);
+    for(auto &it: goods)cin >> it;
+
+    for(int i=0;i<m;i++){
+        int u,v;
+        cin>>u>>v;
+        u--;v--;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+
+    vector<vector<int>> distance(k, vector<int>(n,INT_MAX));
+
+    for(int i=0;i<k;i++){
+        // now do bfs
+        vector<bool> visited(n, false);
+        queue<int> q;
+        for(int j=0;j<n;j++){
+            if(goods[j] == i+1){
+                distance[i][j]=0;
+                q.push(j);
+            }
+        }
+        while(!q.empty()){
+            int node=q.front();
+            q.pop();
+            visited[node]=true;
+            for(auto x: graph[node]){
+                if(!visited[x]){
+                    q.push(x);
+                    distance[i][x]=min(distance[i][x], distance[i][node]+1);
+                }
+            }
+        }
+    }
+
+    // finding answers 
+    vector<int> ans(n);
+    for(int i=0;i<n;i++){
+        priority_queue<int> pq;
+        for(int j=0;j<k;j++){
+            pq.push(distance[j][i]);
+            if(pq.size()>s)pq.pop();
+        }
+        int sm=0;
+        while(!pq.empty()){
+            sm+=pq.top();
+            pq.pop();
+        }
+        cout<<sm<<" ";
+    }
+    cout<<endl;
 }
 
 int main() {

@@ -119,7 +119,47 @@ public:
 /* problem code here */
 
 void solve() {
+    int n,m;
+    cin>>n>>m;
+    vector<int> graph[n];
+    for(int i=0;i<m;i++){
+        int k;
+        cin>>k;
+        int prev=-1;
+        for(int j=0;j<k;j++){
+            int node;
+            cin>>node;
+            if(prev!=-1){
+                graph[prev-1].push_back(node-1);
+                graph[node-1].push_back(prev-1);
+            }
+            prev=node;
+        }
+    }
+
+    vector<bool> visited(n, false);
+    vector<int> ccIds(n, false);
+    map<int,int> count;
+
+    function<void(int,int)>dfs=[&](int node, int ccId){
+        visited[node]=true;
+        count[ccId]++;
+        ccIds[node]=ccId;
+        for(auto x: graph[node]){
+            if(!visited[x]){
+                dfs(x, ccId);
+            }
+        }
+    };
     
+    for(int i=0;i<n;i++){
+        if(!visited[i]) dfs(i, i);
+    }
+
+    for(int i=0;i<n;i++){
+        cout << count[ccIds[i]] << " ";
+    }
+    cout << endl;
 }
 
 int main() {
